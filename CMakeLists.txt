@@ -2,7 +2,7 @@
 set(APP_NAME algorithm)
 project (${APP_NAME})
 
-add_executable(${APP_NAME} Bezier.cc Bezier.h test.cc vector.h)
+add_executable(${APP_NAME} Bezier.cc Bezier.h test.cc Vec2.h)
 
 
 if(EMSCRIPTEN)

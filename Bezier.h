@@ -1,30 +1,42 @@
 #ifndef _BEZIER_INCLUDED_
-#include "vector.h"
-class Bezier {
-    public:
-    point *p0, *p1, *p2, *p3;
-    Bezier()
+#include "Vec2.h"
+#include <vector>
+struct Bezier{
+	Bezier(){}
+    Bezier(const Vec2& _p0, const Vec2& _p1
+		, const Vec2& _p2, const Vec2& _p3 ):p0(_p0), p1(_p1), p2(_p2), p3(_p3)
 	{
-	p0 = 0; p1 = 0; p2 = 0; p3 = 0;
+		if (p0.x > p3.x)	
+			minx = p3.x, maxx = p0.x;
+		else
+			minx = p0.x, maxx = p3.x;
+		if (p2.x < minx)
+			minx = p2.x;
+		else if (p2.x > maxx)
+			maxx = p2.x;
+		if (p1.x < minx)
+			minx = p1.x;
+		else if (p1.x > maxx)
+			maxx = p1.x;
+		if (p0.y > p3.y)
+			miny = p3.y, maxy = p0.y;
+		else
+			miny = p0.y, maxy = p3.y;
+		if (p2.y < miny)
+			miny = p2.y;
+		else if (p2.y > maxy)
+			maxy = p2.y;
+		if (p1.y < miny)
+			miny = p1.y;
+		else if (p1.y > maxy)
+			maxy = p1.y;
 	}
-    Bezier( point *_p0, point *_p1, point *_p2, point *_p3 )
-	{
-	p0 = _p0; p1 = _p1; p2 = _p2; p3 = _p3;
-	}
-    Bezier * Split( );
-    void ParameterSplitLeft( double t, Bezier &result );
+    void  split(Bezier** l, Bezier** r);
 
-    // Intersect with another curve.  Return two 10-elt arrays. Array 0 
-    // contains fragments of self. Array 1 contains fragments of other curve.
-    // Fragments continue until one with nil pointers pointing at point data.
-    double **Intersect( Bezier B ); 
-    ~Bezier()
-	{
-// 	if( --p0->refcount <= 0 ) delete p0;
-// 	if( --p1->refcount <= 0 ) delete p1;
-// 	if( --p2->refcount <= 0 ) delete p2;
-// 	if( --p3->refcount <= 0 ) delete p3;
-	}
-    };
+	void intersect(Bezier* b,std::vector<Vec2>& intersections);
+
+	Vec2 p0, p1, p2, p3;
+	double minx, maxx, miny, maxy;
+};
 #define _BEZIER_INCLUDED_
 #endif

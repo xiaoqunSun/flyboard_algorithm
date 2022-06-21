@@ -17,70 +17,40 @@ int gettimeofday(struct timeval * val, struct timezone *)
 	}
 	return 0;
 }
-#else
-#include <sys/time.h>
 #endif // _WIN32
 
-extern "C" 
-{ 
-	const char *opus_get_version_string(void)
-	{
-		return "asdafdfad";
-	}
-		int *multiply(int a, int b)
-	{
-		// Allocates native memory in C.
-		int *mult = (int *)malloc(sizeof(int));
-		*mult = a * b;
 
-		//printf("malloc_pointer%p\n",mult);
-		return mult;
-	}
+double gettime()
+{
+	struct timeval tv;
+	gettimeofday(&tv, nullptr);
 
-	void free_pointer(int *int_pointer)
-	{
-		// Free native memory in C which was allocated in C.
-		free(int_pointer);
-
-		//printf("free_pointer%p\n",int_pointer);
-	}
-
-	
+	return (double)tv.tv_sec + (double)tv.tv_usec / 1000000;
 }
 
-// double gettime()
-// {
-// 	struct timeval tv;
-// 	gettimeofday(&tv, nullptr);
+int main()
+    {
+	Vec2 p0 = Vec2(471.20001220703125, 258.6000061035156);
+	Vec2 p1 = Vec2(672.2666625976562, 398.3333435058594);
+	Vec2 p2 = Vec2(504.5333251953125, 676.7333374023438);
+	Vec2 p3 = Vec2(370.3999938964844, 781);
+	Vec2 q0 = Vec2(611.2000732421875, 186.59999084472656);
+	Vec2 q1 = Vec2(498.13338216145837, 418.60000101725257);
+	Vec2 q2 = Vec2(612.8000284830729, 757.000010172526);
+	Vec2 q3 = Vec2(698.4000244140625, 868.2000122070312);
+	Bezier A = Bezier(p0, p1, p2, p3);
+	Bezier B = Bezier(q0, q1, q2, q3);
 
-// 	return (double)tv.tv_sec + (double)tv.tv_usec / 1000000;
-// }
-
-// int main()
-//     {
-// 	point p0 = point(471.20001220703125, 258.6000061035156);
-// 	point p1 = point(672.2666625976562, 398.3333435058594);
-// 	point p2 = point(504.5333251953125, 676.7333374023438);
-// 	point p3 = point(370.3999938964844, 781);
-// 	point q0 = point(611.2000732421875, 186.59999084472656);
-// 	point q1 = point(498.13338216145837, 418.60000101725257);
-// 	point q2 = point(612.8000284830729, 757.000010172526);
-// 	point q3 = point(698.4000244140625, 868.2000122070312);
-// 	Bezier A = Bezier(&p0, &p1, &p2, &p3);
-// 	Bezier B = Bezier(&q0, &q1, &q2, &q3);
-
-// 	double t = gettime();
-// 	double** r;
-// 	for (int i = 1;i<1000;++i)
-// 	{
-
-
-// 		r = B.Intersect(A);
-// 	}
-// 	printf("cost %f\n", gettime() - t);
-// 	for (int i= 0;i < 9;++i)
-// 	{
-// 		printf("%f  %f\n", r[0][i], r[1][i]);
-// 	}
-	
-//     }
+	double t = gettime();
+	std::vector<Vec2> intersections;
+	for (int i = 0; i < 1000; ++i)
+	{
+		intersections.clear();
+		B.intersect(&A, intersections);
+	}
+	printf("cost %f\n", gettime() - t);
+	for (unsigned i = 0; i < intersections.size(); ++i)
+	{
+		printf("%f  %f\n", intersections[i].x, intersections[i].y);
+	}
+    }
