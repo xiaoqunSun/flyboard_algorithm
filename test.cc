@@ -17,6 +17,8 @@ int gettimeofday(struct timeval * val, struct timezone *)
 	}
 	return 0;
 }
+#else
+#include <sys/time.h>
 #endif // _WIN32
 
 
@@ -29,7 +31,7 @@ double gettime()
 }
 
 int main()
-    {
+{
 	Vec2 p0 = Vec2(471.20001220703125, 258.6000061035156);
 	Vec2 p1 = Vec2(672.2666625976562, 398.3333435058594);
 	Vec2 p2 = Vec2(504.5333251953125, 676.7333374023438);
@@ -48,9 +50,9 @@ int main()
 		intersections.clear();
 		B.intersect(&A, intersections);
 	}
-	printf("cost %f\n", gettime() - t);
-	for (unsigned i = 0; i < intersections.size(); ++i)
-	{
-		printf("%f  %f\n", intersections[i].x, intersections[i].y);
-	}
-    }
+	// printf("cost %f\n", gettime() - t);
+	// for (unsigned i = 0; i < intersections.size(); ++i)
+	// {
+	// 	printf("%f  %f\n", intersections[i].x, intersections[i].y);
+	// }
+}
